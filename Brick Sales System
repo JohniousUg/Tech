@@ -1,0 +1,88 @@
+#include <iostream>
+
+class Brick {
+private:
+  std::string name;
+  int price;
+  int quantity;
+
+public:
+  Brick(std::string name, int price) : name(name), price(price), quantity(0) {}
+
+  void set_quantity(int quantity) {
+    this->quantity = quantity;
+  }
+
+  int get_total_cost() {
+    return price * quantity;
+  }
+};
+
+int get_brick_type() {
+  int choice;
+  std::cout << "Select Brick Type:\n";
+  std::cout << "1. Clay Brick (UGX 250)\n";
+  std::cout << "2. Concrete Brick (UGX 300)\n";
+  std::cout << "3. Perforated Brick (UGX 350)\n";
+  std::cout << "4. Hollow Brick (UGX 400)\n";
+  std::cin >> choice;
+
+  while (choice < 1 || choice > 4) {
+    std::cout << "Invalid choice. Please select again: ";
+    std::cin >> choice;
+  }
+
+  return choice;
+}
+
+int get_quantity() {
+  int quantity;
+  std::cout << "Enter quantity: ";
+  std::cin >> quantity;
+
+  while (quantity <= 0) {
+    std::cout << "Invalid quantity. Please enter a positive number: ";
+    std::cin >> quantity;
+  }
+
+  return quantity;
+}
+
+double calculate_discount(double total_cost) {
+  if (total_cost >= 1000000) {
+    return total_cost * 0.1;
+  } else {
+    return 0;
+  }
+}
+
+void display_summary(Brick bricks[]) {
+  double total_cost = 0.0;
+  double discount = 0.0;
+
+  std::cout << "\nPurchase Summary:\n";
+  for (int i = 0; i < 4; i++) {
+    if (bricks[i].quantity > 0) {
+      double type_total = bricks[i].get_total_cost();
+      total_cost += type_total;
+      discount = calculate_discount(total_cost);
+      std::cout << bricks[i].name << ": " << bricks[i].quantity << " x UGX " << bricks[i].price << " = UGX " << type_total << std::endl;
+    }
+  }
+
+  if (discount > 0) {
+    std::cout << "Discount (10%): UGX " << discount << std::endl;
+  }
+  std::cout << "Total Cost: UGX " << total_cost - discount << std::endl;
+}
+
+int main() {
+  Brick bricks[4] = {
+      Brick("Clay Brick", 250),
+      Brick("Concrete Brick", 300),
+      Brick("Perforated Brick", 350),
+      Brick("Hollow Brick", 400)};
+
+  for (int i = 0; i < 4; i++) {
+    int type = get_brick_type();
+    int quantity =
